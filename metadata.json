@@ -1,0 +1,6 @@
+{
+  "name": "JADSON BARBER",
+  "description": "Agendamento online e painel administrativo completo para barbearia de alto padrão.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
