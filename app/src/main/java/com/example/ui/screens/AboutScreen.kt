@@ -15,6 +15,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,6 +46,63 @@ fun AboutScreen(
     val whatsapp = settings?.whatsappNumber ?: "5511999998888"
     val instagram = settings?.instagram ?: "@jadsonbarber"
     val cancellationPolicy = settings?.cancellationPolicy ?: "Cancelamentos com até 2 horas de antecedência."
+
+    var showApkDialog by remember { mutableStateOf(false) }
+
+    if (showApkDialog) {
+        AlertDialog(
+            onDismissRequest = { showApkDialog = false },
+            title = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(imageVector = Icons.Default.Download, contentDescription = null, tint = GoldPrimary)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Como Baixar o Arquivo APK", color = TextPrimary, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                }
+            },
+            text = {
+                Column {
+                    Text(
+                        text = "Para baixar e instalar o arquivo APK do Jadson Barber em qualquer celular Android:",
+                        color = TextPrimary,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = "1. No menu de configurações/opções do AI Studio (no painel superior ou lateral), clique em 'Download APK' ou 'Export'.\n\n2. O arquivo de instalação .apk será compilado e baixado para o seu dispositivo.\n\n3. Você poderá enviar esse arquivo diretamente pelo WhatsApp para seus clientes instalarem no celular!",
+                        color = TextSecondary,
+                        fontSize = 13.sp
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showApkDialog = false
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_SUBJECT, "App Jadson Barber")
+                            putExtra(
+                                Intent.EXTRA_TEXT,
+                                "💈 Baixe o app exclusivo da JADSON BARBER para agendar seu horário online!"
+                            )
+                        }
+                        context.startActivity(Intent.createChooser(shareIntent, "Compartilhar App"))
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = GoldPrimary, contentColor = BlackAbsolute)
+                ) {
+                    Text("Compartilhar Convite", fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showApkDialog = false }) {
+                    Text("Fechar", color = TextSecondary)
+                }
+            },
+            containerColor = DarkSurfaceVariant,
+            shape = RoundedCornerShape(16.dp)
+        )
+    }
 
     Column(
         modifier = modifier
@@ -108,6 +168,67 @@ fun AboutScreen(
                     Icon(imageVector = Icons.Default.Map, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("ABRIR NO GOOGLE MAPS", fontWeight = FontWeight.Bold)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Share & Download App Card
+        Card(
+            colors = CardDefaults.cardColors(containerColor = DarkSurfaceVariant),
+            border = BorderStroke(1.dp, GoldPrimary.copy(alpha = 0.5f)),
+            shape = RoundedCornerShape(14.dp),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(imageVector = Icons.Default.Share, contentDescription = null, tint = GoldPrimary)
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(text = "Compartilhar & Baixar App", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
+                }
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = "Baixe o arquivo de instalação (APK) ou compartilhe o aplicativo da JADSON BARBER com seus amigos.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = TextSecondary
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                Button(
+                    onClick = {
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_SUBJECT, "App Jadson Barber (APK)")
+                            putExtra(
+                                Intent.EXTRA_TEXT,
+                                "💈 Conheça e baixe o app oficial da JADSON BARBER (APK) para agendar seu horário no celular: https://ais-pre-bebugr6x3an566qasku62a-68222249657.us-east1.run.app"
+                            )
+                        }
+                        context.startActivity(Intent.createChooser(shareIntent, "Compartilhar Aplicativo"))
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = GoldPrimary, contentColor = BlackAbsolute),
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("COMPARTILHAR COM AMIGOS", fontWeight = FontWeight.Bold)
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedButton(
+                    onClick = { showApkDialog = true },
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = GoldPrimary),
+                    border = BorderStroke(1.dp, GoldPrimary),
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(imageVector = Icons.Default.Download, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("COMO BAIXAR O APK", fontWeight = FontWeight.Bold)
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.example.ui.screens
 
+import android.content.Intent
 import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -124,11 +125,29 @@ fun ClientTopAppBar(onOpenAdmin: () -> Unit) {
             }
         },
         actions = {
+            val context = androidx.compose.ui.platform.LocalContext.current
+            IconButton(onClick = {
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_SUBJECT, "App e Agendamento Jadson Barber")
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "💈 Baixe o app da JADSON BARBER (APK) e agende seu horário online pelo celular! Acesse ou baixe em: https://ais-pre-bebugr6x3an566qasku62a-68222249657.us-east1.run.app"
+                    )
+                }
+                context.startActivity(Intent.createChooser(shareIntent, "Compartilhar Barbearia"))
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = "Compartilhar Aplicativo",
+                    tint = GoldPrimary
+                )
+            }
             IconButton(onClick = onOpenAdmin) {
                 Icon(
                     imageVector = Icons.Default.AdminPanelSettings,
                     contentDescription = "Painel Administrativo",
-                    tint = GoldPrimary
+                    tint = TextSecondary
                 )
             }
         },

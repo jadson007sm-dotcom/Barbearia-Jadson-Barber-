@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadson Barber - Agendamento Online & App</title>
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --surface-dark: #1E1E1E;
+            --surface-variant: #282828;
+            --border-color: #333333;
+            --gold-primary: #D4AF37;
+            --gold-light: #FFD700;
+            --gold-dark: #AA820A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --danger: #FF5252;
+            --success: #4CAF50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+        }
+
+        /* HEADER & NAVBAR */
+        header {
+            background-color: var(--surface-dark);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 12px 20px;
+        }
+
+        .header-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-badge {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+            color: #000;
+            font-weight: 900;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .logo-text h1 {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            color: var(--gold-primary);
+            background-color: rgba(212, 175, 55, 0.1);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+            color: #000;
+            font-weight: 700;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: transform 0.1s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-gold:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--gold-primary);
+            border: 1px solid var(--gold-primary);
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-outline:hover {
+            background: rgba(212, 175, 55, 0.15);
+        }
+
+        /* MAIN LAYOUT */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(180deg, var(--surface-dark) 0%, var(--bg-dark) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px 24px;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero h2 {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero h2 span {
+            color: var(--gold-primary);
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto 24px auto;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* SECTION TITLES */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 20px;
+            background-color: var(--gold-primary);
+            border-radius: 2px;
+        }
+
+        /* SERVICES GRID */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .service-card {
+            background-color: var(--surface-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--gold-primary);
+        }
+
+        .service-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .service-info p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .service-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 14px;
+        }
+
+        .service-price {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--gold-primary);
+        }
+
+        .service-duration {
+            font-size: 12px;
+            color: var(--text-secondary);
+            background-color: var(--surface-variant);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        /* BOOKING MODAL & FORM */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 16px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background-color: var(--surface-dark);
+            border: 1px solid var(--gold-primary);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            color: var(--gold-primary);
+            font-weight: 800;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            background-color: var(--surface-variant);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--gold-primary);
+        }
+
+        .slots-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .slot-btn {
+            background-color: var(--surface-variant);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .slot-btn:hover {
+            border-color: var(--gold-primary);
+        }
+
+        .slot-btn.selected {
+            background-color: var(--gold-primary);
+            color: #000;
+            border-color: var(--gold-light);
+            font-weight: 800;
+        }
+
+        /* APPOINTMENTS TAB */
+        .appointments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 40px;
+        }
+
+        .appointment-card {
+            background-color: var(--surface-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .appointment-info h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gold-primary);
+        }
+
+        .appointment-info p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .appointment-badge {
+            display: inline-block;
+            background-color: rgba(76, 175, 80, 0.15);
+            color: var(--success);
+            border: 1px solid var(--success);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .btn-danger {
+            background: transparent;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 82, 82, 0.15);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: var(--surface-dark);
+            border: 1px dashed var(--border-color);
+            border-radius: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* BARBERSHOP INFO SECTION */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            background-color: var(--surface-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .info-card h4 {
+            color: var(--gold-primary);
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--surface-dark);
+            border-top: 1px solid var(--border-color);
+            padding: 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .hero h2 {
+                font-size: 24px;
+            }
+            .nav-text {
+                display: none;
+            }
+            .header-container {
+                padding: 0;
+            }
+            .slots-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">
+                <div class="logo-badge">J</div>
+                <div class="logo-text">
+                    <h1>Jadson Barber</h1>
+                    <p>Barbearia & Estilo</p>
+                </div>
+            </a>
+            <nav>
+                <button class="nav-btn active" onclick="switchTab('servicos')">Serviços</button>
+                <button class="nav-btn" onclick="switchTab('agendamentos')">Meus Agendamentos</button>
+                <button class="btn-gold" onclick="openBookingModal()">✂️ Agendar</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main>
+        <!-- HERO BANNER -->
+        <section class="hero">
+            <h2>Corte, Barba & <span>Estilo de Alto Padrão</span></h2>
+            <p>Agende seu horário online em poucos segundos e garanta um atendimento exclusivo na Jadson Barber.</p>
+            <div class="hero-actions">
+                <button class="btn-gold" onclick="openBookingModal()">📅 AGENDAR HORÁRIO</button>
+                <button class="btn-outline" onclick="openApkModal()">📲 BAIXAR APP ANDROID (APK)</button>
+            </div>
+        </section>
+
+        <!-- SERVICES TAB -->
+        <section id="tab-servicos">
+            <div class="section-header">
+                <h2 class="section-title">Nossos Serviços</h2>
+            </div>
+            <div class="services-grid" id="services-container">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <!-- BARBERSHOP INFO -->
+            <div class="section-header" style="margin-top: 40px;">
+                <h2 class="section-title">Informações da Barbearia</h2>
+            </div>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>📍 Localização</h4>
+                    <p>Rua Principal, 100 - Centro</p>
+                    <p>Atendimento presencial com ambiente climatizado e sinuca.</p>
+                </div>
+                <div class="info-card">
+                    <h4>🕒 Horário de Funcionamento</h4>
+                    <p><strong>Segunda a Sábado:</strong> 08:00 às 20:00</p>
+                    <p><strong>Domingo:</strong> Fechado</p>
+                </div>
+                <div class="info-card">
+                    <h4>📞 Contato & Redes</h4>
+                    <p><strong>WhatsApp:</strong> (11) 99999-9999</p>
+                    <p><strong>Instagram:</strong> @jadsonbarber</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- APPOINTMENTS TAB -->
+        <section id="tab-agendamentos" style="display: none;">
+            <div class="section-header">
+                <h2 class="section-title">Meus Agendamentos</h2>
+                <button class="btn-gold" onclick="openBookingModal()">+ Novo Agendamento</button>
+            </div>
+            <div id="appointments-container" class="appointments-list">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- BOOKING MODAL -->
+    <div class="modal-overlay" id="booking-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Novo Agendamento</h3>
+                <button class="close-btn" onclick="closeBookingModal()">&times;</button>
+            </div>
+            <form id="booking-form" onsubmit="handleBookingSubmit(event)">
+                <div class="form-group">
+                    <label for="client-name">Seu Nome Completo *</label>
+                    <input type="text" id="client-name" class="form-control" placeholder="Digite seu nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="client-phone">Seu WhatsApp / Telefone *</label>
+                    <input type="tel" id="client-phone" class="form-control" placeholder="(00) 00000-0000" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="service-select">Selecione o Serviço *</label>
+                    <select id="service-select" class="form-control" required onchange="updateServiceDetails()">
+                        <!-- Injected via JavaScript -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="booking-date">Data do Agendamento *</label>
+                    <input type="date" id="booking-date" class="form-control" required onchange="renderTimeSlots()">
+                </div>
+
+                <div class="form-group">
+                    <label>Horários Disponíveis *</label>
+                    <div class="slots-grid" id="slots-container">
+                        <!-- Injected via JavaScript -->
+                    </div>
+                    <input type="hidden" id="selected-slot" required>
+                </div>
+
+                <div style="margin-top: 24px;">
+                    <button type="submit" class="btn-gold" style="width: 100%;">CONFIRMAR AGENDAMENTO</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- APK DOWNLOAD MODAL -->
+    <div class="modal-overlay" id="apk-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Baixar Aplicativo (APK)</h3>
+                <button class="close-btn" onclick="closeApkModal()">&times;</button>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 16px; font-size: 14px;">
+                O aplicativo nativo Android da <strong>Jadson Barber</strong> permite agendar horários, receber notificações e gerenciar seus cortes diretamente do seu celular.
+            </p>
+            <div style="background-color: var(--surface-variant); padding: 14px; border-radius: 10px; margin-bottom: 20px; border-left: 4px solid var(--gold-primary);">
+                <p style="font-size: 13px; color: var(--text-primary); font-weight: 600;">Como instalar no seu Android:</p>
+                <ol style="font-size: 12px; color: var(--text-secondary); margin-left: 18px; margin-top: 6px; line-height: 1.6;">
+                    <li>Baixe o arquivo <code>.apk</code> para o seu celular.</li>
+                    <li>Abra o arquivo e autorize a instalação de fontes desconhecidas se solicitado.</li>
+                    <li>Pronto! O app da Jadson Barber estará na sua tela inicial.</li>
+                </ol>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="btn-gold" onclick="shareWhatsApp()">📲 COMPARTILHAR CONVITE NO WHATSAPP</button>
+                <button class="btn-outline" onclick="closeApkModal()">FECHAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Jadson Barber - Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // SERVICES DATA
+        const SERVICES = [
+            { id: 1, name: 'Corte Degradê / Moderno', price: 35.00, duration: '40 min', desc: 'Corte completo com acabamento na navalha e finalização com pomada.' },
+            { id: 2, name: 'Barba Completa', price: 25.00, duration: '30 min', desc: 'Modelagem de barba com toalha quente, óleo hidratante e navalha.' },
+            { id: 3, name: 'Combo Corte + Barba', price: 55.00, duration: '60 min', desc: 'O pacote completo para o seu visual com desconto especial.' },
+            { id: 4, name: 'Pigmentação de Barba / Cabelo', price: 20.00, duration: '20 min', desc: 'Disfarce de falhas e realce do contorno com tinta especial.' },
+            { id: 5, name: 'Sobrancelha na Navalha', price: 10.00, duration: '15 min', desc: 'Design e alinhamento perfeito para valorizar o olhar.' }
+        ];
+
+        const TIME_SLOTS = ['08:00', '09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
+
+        let selectedSlot = '';
+
+        // INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            renderServices();
+            populateServiceOptions();
+            setMinDate();
+            renderAppointments();
+        });
+
+        // TAB SWITCHING
+        function switchTab(tabName) {
+            const tabs = ['servicos', 'agendamentos'];
+            tabs.forEach(t => {
+                document.getElementById(`tab-${t}`).style.display = (t === tabName) ? 'block' : 'none';
+            });
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick').includes(tabName));
+            });
+        }
+
+        // RENDER SERVICES
+        function renderServices() {
+            const container = document.getElementById('services-container');
+            container.innerHTML = SERVICES.map(s => `
+                <div class="service-card">
+                    <div class="service-info">
+                        <h3>${s.name}</h3>
+                        <p>${s.desc}</p>
+                    </div>
+                    <div class="service-footer">
+                        <div>
+                            <span class="service-price">R$ ${s.price.toFixed(2).replace('.', ',')}</span>
+                            <span class="service-duration">${s.duration}</span>
+                        </div>
+                        <button class="btn-gold" onclick="openBookingModalForService(${s.id})">Agendar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // POPULATE SERVICE SELECT
+        function populateServiceOptions() {
+            const select = document.getElementById('service-select');
+            select.innerHTML = SERVICES.map(s => `
+                <option value="${s.id}">${s.name} - R$ ${s.price.toFixed(2).replace('.', ',')}</option>
+            `).join('');
+        }
+
+        // SET MIN DATE TO TODAY
+        function setMinDate() {
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('booking-date');
+            dateInput.min = today;
+            dateInput.value = today;
+            renderTimeSlots();
+        }
+
+        // RENDER TIME SLOTS
+        function renderTimeSlots() {
+            const container = document.getElementById('slots-container');
+            selectedSlot = '';
+            document.getElementById('selected-slot').value = '';
+
+            container.innerHTML = TIME_SLOTS.map(slot => `
+                <button type="button" class="slot-btn" onclick="selectSlot(this, '${slot}')">${slot}</button>
+            `).join('');
+        }
+
+        function selectSlot(btn, slot) {
+            document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedSlot = slot;
+            document.getElementById('selected-slot').value = slot;
+        }
+
+        // MODAL CONTROLS
+        function openBookingModal() {
+            document.getElementById('booking-modal').classList.add('active');
+        }
+
+        function openBookingModalForService(serviceId) {
+            document.getElementById('service-select').value = serviceId;
+            openBookingModal();
+        }
+
+        function closeBookingModal() {
+            document.getElementById('booking-modal').classList.remove('active');
+        }
+
+        function openApkModal() {
+            document.getElementById('apk-modal').classList.add('active');
+        }
+
+        function closeApkModal() {
+            document.getElementById('apk-modal').classList.remove('active');
+        }
+
+        // HANDLE BOOKING SUBMISSION
+        function handleBookingSubmit(event) {
+            event.preventDefault();
+
+            if (!selectedSlot) {
+                alert('Por favor, escolha um horário disponível!');
+                return;
+            }
+
+            const name = document.getElementById('client-name').value;
+            const phone = document.getElementById('client-phone').value;
+            const serviceId = parseInt(document.getElementById('service-select').value);
+            const date = document.getElementById('booking-date').value;
+
+            const service = SERVICES.find(s => s.id === serviceId);
+
+            const booking = {
+                id: Date.now(),
+                clientName: name,
+                clientPhone: phone,
+                serviceName: service.name,
+                price: service.price,
+                date: formatDate(date),
+                time: selectedSlot,
+                status: 'Confirmado'
+            };
+
+            // Save to LocalStorage
+            const existing = JSON.parse(localStorage.getItem('jadson_bookings') || '[]');
+            existing.push(booking);
+            localStorage.setItem('jadson_bookings', JSON.stringify(existing));
+
+            // Notify User & Send via WhatsApp
+            alert(`✅ Agendamento confirmado para ${name} no dia ${booking.date} às ${booking.time}!`);
+
+            const message = encodeURIComponent(`💈 *Novo Agendamento - Jadson Barber*\n\n👤 *Cliente:* ${name}\n📞 *Telefone:* ${phone}\n✂️ *Serviço:* ${service.name}\n📅 *Data:* ${booking.date}\n⏰ *Horário:* ${booking.time}\n💰 *Valor:* R$ ${service.price.toFixed(2).replace('.', ',')}`);
+            window.open(`https://wa.me/?text=${message}`, '_blank');
+
+            closeBookingModal();
+            renderAppointments();
+            switchTab('agendamentos');
+        }
+
+        // RENDER APPOINTMENTS
+        function renderAppointments() {
+            const container = document.getElementById('appointments-container');
+            const bookings = JSON.parse(localStorage.getItem('jadson_bookings') || '[]');
+
+            if (bookings.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <p style="font-size: 18px; font-weight: 700; margin-bottom: 6px;">Nenhum agendamento encontrado</p>
+                        <p>Clique no botão acima para agendar seu corte na Jadson Barber.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = bookings.slice().reverse().map(b => `
+                <div class="appointment-card">
+                    <div class="appointment-info">
+                        <h4>${b.serviceName}</h4>
+                        <p>👤 <strong>Cliente:</strong> ${b.clientName} (${b.clientPhone})</p>
+                        <p>📅 <strong>Data:</strong> ${b.date} às ⏰ <strong>${b.time}</strong></p>
+                        <p>💰 <strong>Valor:</strong> R$ ${b.price.toFixed(2).replace('.', ',')}</p>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="appointment-badge">${b.status}</span>
+                        <button class="btn-danger" onclick="cancelAppointment(${b.id})">Cancelar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // CANCEL APPOINTMENT
+        function cancelAppointment(id) {
+            if (confirm('Deseja realmente cancelar este agendamento?')) {
+                let bookings = JSON.parse(localStorage.getItem('jadson_bookings') || '[]');
+                bookings = bookings.filter(b => b.id !== id);
+                localStorage.setItem('jadson_bookings', JSON.stringify(bookings));
+                renderAppointments();
+            }
+        }
+
+        // FORMAT DATE (YYYY-MM-DD to DD/MM/YYYY)
+        function formatDate(dateStr) {
+            const parts = dateStr.split('-');
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+
+        // SHARE WHATSAPP
+        function shareWhatsApp() {
+            const msg = encodeURIComponent('💈 Conheça e agende seu horário no app da JADSON BARBER! Acesse o site ou baixe nosso app.');
+            window.open(`https://wa.me/?text=${msg}`, '_blank');
+        }
+    </script>
+</body>
+</html>
